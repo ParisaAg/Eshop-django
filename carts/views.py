@@ -4,8 +4,7 @@ from .models import Cart,CartItem
 from django.http import HttpResponse
 # Create your views here.
 
-def cart(request):
-    return render(request,'store/cart.html')
+
 
 def _cart_id(request):
     cart = request.session.session_key
@@ -35,9 +34,28 @@ def add_cart(request,product_id):
             cart=cart
         )
         cart_item.save()
-    return HttpResponse(cart_item.product)
-    exit()
+
     return redirect('cart')
 
 
+def cart(request,total=0,cart_item=None,quantity=0):
+    try:
+        cart= Cart.objects.get(cart_id=_cart_id(request))
+        cart_items=CartItem.objects.filter(cart=cart,is_active=True)
+        for cart_item in cart_items:
+            total+=(cart_item.product.price * cart_item.quantity)
+            quantity+=cart_item.quantity
+        tax=(2*total)/1000
+        final_fee=total-tax
+    except ObjectNotExist:
+        pass
 
+    context = {
+        'total':total,
+        'quantity':quantity,
+        'cart_items':cart_items,
+        'tax':tax,
+        'final_fee':final_fee,
+
+    }
+    return render(request,'store/cart.html',context)
