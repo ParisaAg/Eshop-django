@@ -55,9 +55,6 @@ def delete_item(request,product_id):
 
 
 
-
-
-
 def cart(request,total=0,cart_item=None,quantity=0):
     try:
         cart= Cart.objects.get(cart_id=_cart_id(request))
