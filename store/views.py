@@ -3,6 +3,7 @@ from .models import Product
 from category.models import Category
 from carts.models import CartItem
 from carts.views import _cart_id
+from django.http import HttpResponse
 # Create your views here.
 def store(request,category_slug=None):
     categories=None
@@ -23,12 +24,14 @@ def store(request,category_slug=None):
 def product_detail(request,category_slug,product_slug):
     try:
         signal_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
-        in_cart= CartItem.objects.filter(cart__cart_id=_cart_id(request))
+        in_cart= CartItem.objects.filter(cart__cart_id=_cart_id(request),product=signal_product).exists()
+
     except Exception as e:
         raise e
 
     context={
         'signal_product':signal_product,
+        'in_cart':in_cart,
     }
 
     return render(request,'store/product_detail.html',context)
