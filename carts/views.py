@@ -14,7 +14,11 @@ def _cart_id(request):
 
 
 def add_cart(request,product_id):
-    product= Product.objects.get(id=product_id)
+    if request.method =='POST':
+        color=request.POST['color']
+        size=request.POST['size']
+        product= Product.objects.get(id=product_id)
+    print(color,size)
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))
     except Cart.DoesNotExist:

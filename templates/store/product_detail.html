@@ -16,69 +16,56 @@
 </article> <!-- gallery-wrap .end// -->
 		</aside>
 		<main class="col-md-6 border-left">
-<article class="content-body">
+            <form action="{% url 'add_cart' signal_product.id%} "method="POST">
+                {% csrf_token  %}
+                <article class="content-body">
 
-<h2 class="title">{{ signal_product.product_name }}</h2>
+                <h2 class="title">{{ signal_product.product_name }}</h2>
 
-<div class="mb-3">
-	<var class="price h4">{{ signal_product.price }}</var>
-</div>
+                <div class="mb-3">
+                    <var class="price h4">{{ signal_product.price }}</var>
+                </div>
 
-<p>{{ signal_product.description }}</p>
+                <p>{{ signal_product.description }}</p>
 
 
-<hr>
-	<div class="row">
-		<div class="item-option-select">
-			<h6>Choose Color</h6>
-			<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> Silver
-			  </label>
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color" > Gray
-			  </label>
-			  <label class="btn btn-light active">
-			    <input type="radio" name="radio_color checked"> Gold
-			  </label>
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> Black
-			  </label>
-			</div>
-		</div>
-	</div> <!-- row.// -->
-	<div class="row">
-		<div class="item-option-select">
-			<h6>Select Size</h6>
-			<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> S
-			  </label>
-			  <label class="btn btn-light active">
-			    <input type="radio" name="radio_color" checked> M
-			  </label>
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> L
-			  </label>
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> XL
-			  </label>
-			</div>
-		</div>
-	</div> <!-- row.// -->
-	<hr>
-    {% if signal_product.stock <= 0 %}
-    <h5 class="text-danger">موجود نیست</h5>
-    {% else %}
-        {% if in_cart %}
-            	<a href="#" class="btn  btn-success"> <span class="text">به سبد خرید اضافه شد </span> <i class="fas fa-check"></i> </a>
-                <a href="{% url 'cart' %}" class="btn  btn-outline-primary"> <span class="text">مشاهده سبد خرید</span> <i class="fas fa-eye"></i> </a>
+                <hr>
+                    <div class="row">
+                        <div class="item-option-select">
+                            <h6>انتخاب رنگ</h6>
+                            <select name="color" class="form-control" >
+                                <option value="" disabled selected> انتخاب رنگ</option>
+                                {% for i in signal_product.variation_set.colors %}
+                                    <option value="{{ i.variation_value | lower }}">{{ i.variation_value |capfirst }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div> <!-- row.// -->
+                    <div class="row">
+                        <div class="item-option-select">
+                            <h6>انتخاب سایز</h6>
+                                <select name="size" class="form-control" >
+                                <option value="" disabled selected>انتخاب سایز</option>
+                                {% for i in signal_product.variation_set.sizes %}
+                                    <option value="{{ i.variation_value | lower}}">{{ i.variation_value | capfirst}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div> <!-- row.// -->
+                    <hr>
+                    {% if signal_product.stock <= 0 %}
+                    <h5 class="text-danger">موجود نیست</h5>
+                    {% else %}
+                        {% if in_cart %}
+                                <a href="#" class="btn  btn-success"> <span class="text">به سبد خرید اضافه شد </span> <i class="fas fa-check"></i> </a>
+                                <a href="{% url 'cart' %}" class="btn  btn-outline-primary"> <span class="text">مشاهده سبد خرید</span> <i class="fas fa-eye"></i> </a>
 
-        {% else %}
-	<a href="{% url 'add_cart' signal_product.id%}" class="btn  btn-primary"> <span class="text">اضافه کردن به سبد خرید</span> <i class="fas fa-shopping-cart"></i>  </a>
-        {% endif %}
-    {% endif %}
-</article> <!-- product-info-aside .// -->
+                        {% else %}
+                    <button type="submit" class="btn  btn-primary"> <span class="text">اضافه کردن به سبد خرید</span> <i class="fas fa-shopping-cart"></i>  </button>
+                        {% endif %}
+                    {% endif %}
+                </article> <!-- product-info-aside .// -->
+            </form>
 		</main> <!-- col.// -->
 	</div> <!-- row.// -->
 </div> <!-- card.// -->
@@ -105,9 +92,8 @@
 		</div> <!-- icontext.// -->
 		<div class="mt-3">
 			<p>
-				Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip
+عالی عالی فوق العاده بود واقعا جنسش خودش از لحاظ فانتزی حرف نداشت من خیلی خوشم اومد و اینکه یه امتیاز داره که از جلو باز میشه با دکمه فشاری و مجبور نیستین مثل هودی از گردن بپوشین‌..
+
 			</p>
 		</div>
 	</article>
