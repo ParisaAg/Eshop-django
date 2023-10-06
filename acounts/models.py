@@ -15,6 +15,7 @@ class MyAccountManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
         )
+
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -36,8 +37,6 @@ class MyAccountManager(BaseUserManager):
         return user
 
 
-
-
 class Account(AbstractBaseUser):
     first_name   = models.CharField(max_length=50)
     last_name    = models.CharField(max_length=50)
@@ -55,7 +54,7 @@ class Account(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username','first_name','last_name']
 
-    object = MyAccountManager()
+    objects = MyAccountManager()
 
     def __str__(self):
         return self.email
