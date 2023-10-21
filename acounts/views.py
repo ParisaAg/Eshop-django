@@ -11,7 +11,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_str,force_bytes
 from django.http import HttpResponse
-
+from carts.views import _cart_id,Cart,CartItem
 # Create your views here.
 def register(request):
     if request.method =='POST':
@@ -26,7 +26,7 @@ def register(request):
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username,password=password)
             user.phone_number= phone_number
             user.save()
-
+            messages.success(request,"حساب کاربری با موفقیت ثبت شد")
             #verfications
             # current_site = get_current_site(request)
             # mail_subject = 'لطفا حساب خود را فغال کنید'
@@ -55,6 +55,16 @@ def login(request):
         password=request.POST['password']
         user = auth.authenticate(email=email,password=password)
         if user is not None:
+            try:
+                cart= Cart.objects.get(cart_id=_cart_id(request))
+                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                if is_cart_item_exists:
+                    cat_item = CartItem.objects.filter(cart=cart)
+                    for item in cat_item:
+                        item.user = user
+                        item.save()
+            except:
+                pass
             auth.login(request,user)
             messages.success(request,'با موفقیت وارد شدین')
             return redirect('dashboard')

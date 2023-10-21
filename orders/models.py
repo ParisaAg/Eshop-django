@@ -28,14 +28,13 @@ class Order(models.Model):
     order_number=models.CharField(max_length=100)
     first_name=models.CharField(max_length=150)
     last_name=models.CharField(max_length=150)
-    phone=models.CharField(max_length=15)
+    phone_number=models.CharField(max_length=20,null=True)
     email=models.EmailField(max_length=100)
     address_1=models.CharField(max_length=100)
     address_2=models.CharField(max_length=100, blank=True)
     country=models.CharField(max_length=100)
     city=models.CharField(max_length=100)
     state=models.CharField(max_length=100)
-    order_note=models.CharField(max_length=100,blank=True)
     order_total=models.FloatField()
     tax=models.FloatField()
     status=models.CharField(max_length=10,choices=STATUS,default='New')
@@ -43,6 +42,11 @@ class Order(models.Model):
     is_ordered=models.BooleanField(default=False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def full_address(self):
+        return f'{self.address_1} {self.address_2}'
 
 
     def __str__(self):
